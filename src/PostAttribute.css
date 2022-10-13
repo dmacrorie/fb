@@ -1,0 +1,12 @@
+.row {
+	display: flex;
+	margin: 2px;
+	padding: 2px;
+	flex-direction: row;
+
+}
+
+.attribute {
+	width: 30%;
+}
+
