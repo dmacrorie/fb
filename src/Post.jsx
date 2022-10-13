@@ -1,6 +1,8 @@
 import PostAttribute from "./PostAttribute";
 import './Post.css';
 
+//YOU CAN DECONSTRUCT THIS AND PASS IT IN AS ({TITTLE, CONTENT, LIKES})
+
 const Post = (props) => {
 
     return (
