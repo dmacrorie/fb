@@ -2,11 +2,11 @@ import './App';
 import Post from './Post';
 
 
-const View = (props) => {
+const View = ({posts, increaseLikes, decreaseLikes}) => {
 
     const getPosts = () => {
 
-        return props.posts.map((post) => (
+        return posts.map(() => (
             <>
                 <Post
                     key={post.id}
@@ -14,10 +14,10 @@ const View = (props) => {
                     content={post.content}
                     likes={post.likes}
                 />
-                <button className="likeButton" onClick={() => props.increaseLikes(post.id)}>Like</button>
+                <button className="likeButton" onClick={increaseLikes(post.id)}>Like</button>
+                <button className="dislikeButton" onClick={decreaseLikes(post.id)}>Dislike</button>
             </>
         ))
-
     }
     return (
         <>

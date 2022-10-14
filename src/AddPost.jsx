@@ -9,10 +9,13 @@ import 'toastr/build/toastr.min.css';
 
 const AddPost = (props) => {
 
+// want the initail form to have no title or content
+
     const initialFormValues = {
             title: '',
             content: '',
         };
+//have the initial sate to be blank
 
     const [formValues, changeFormValues] = useState(initialFormValues)
 
@@ -33,24 +36,23 @@ const AddPost = (props) => {
     }
 
 
-    // CHANGE THE ONCHANGE DONT NEED (E) => HANDLECHANGE(E) - JUST PUT THE FUNCTION
     return (
         <div>
-            <Form onSubmit={(event) => submitHandler(event)} class='formInput' >
+            <Form onSubmit={submitHandler} class='formInput' >
             
                     <Form.Label controlId="postTitle">Title: </Form.Label>
                     <Form.Control
                         name="title"
                         type="text"
                         value={formValues.title}
-                        onChange={(event) => handleChange(event)}
+                        onChange={handleChange}
                     /><br/>
-                    <Form.Label > Post: </Form.Label>
+                    <Form.Label >Post: </Form.Label>
                     <Form.Control 
                         name="content"
                         type="text"
                         value={formValues.content}
-                        onChange={(event) => handleChange(event)}
+                        onChange={handleChange}
                     />
             <br></br>
 

@@ -6,3 +6,7 @@
     box-shadow: 7px 9px rgb(235, 138, 138);
     background-color: rgb(171, 237, 237);
 }
+.post:hover {
+    box-shadow: 7px 9px rgb(231, 119, 119);
+    cursor: pointer;
+}
