@@ -12,6 +12,7 @@ import View from './View';
 import Container from 'react-bootstrap/Container';
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
+import PostGetter from './PostGetter';
 
 function App() {
 
@@ -28,46 +29,43 @@ function App() {
 
 
 
-  // TAKING THE ORIGINAL ARRAY AND MAKING AN UPDATED ONE WITH NEW ONE AT THE END
+//
 
   const [posts, setPosts] = useState(initialPosts);
 
-  const updatedPosts = (title, content) => {
-    const item = {
-      id: posts.length,
-      title,
-      content,
-      likes: 0,
-    };
-    localStorage.setItem("list", JSON.stringify([...posts, item]))
-    //SPREADING ORIGINAL ARRAY AND ADDING THE NEW POST TO THE END
-
-    setPosts((state) => [...state, item])
+  // INCREASING LIKES FOR THE CORRECT POST BY MAPPING THROUGH AND INCREASING THE LIKES FOR THE CORRECT ID 
+  
+  const increaseLikes = (id) => {
+    setPosts(posts.map((post) => post.id === id ? ({ ...post, likes: post.likes + 1 }) : post ));
   }
+
+  const decreaseLikes = (id) => {
+    setPosts(posts.map((post) => post.id === id ? ({ ...post, likes: post.likes -1 }) : post));
+  }
+
+  const addPost = (newPost) => {
+    setPosts([...posts, {...newPost, id: posts.length, likes:0}]);
+  }
+
+  localStorage.setItem("list", JSON.stringify([...posts, item]))
+
+
+
+
+//if you add 'posts' to the second empty array then 
 
   useEffect(() => {
     const listContents = localStorage.getItem("list");
     setPosts(JSON.parse(listContents) || [])
   }, [])
 
-  // INCREASING LIKES FOR THE CORRECT POST BY MAPPING THROUGH AND INCREASING THE LIKES FOR THE CORRECT ID 
-
-  const increaseLikes = (id) => {
-    const updatedPosts = posts.map((post) => {
-
-      if (post.id === id) {
-        return { ...post, likes: post.likes + 1 };
-      }
-      return post;
-    });
-    setPosts(updatedPosts);
-  }
 
 
   //MAPPING THROUGH THE ARRAY OF POSTS AND RETURNING EACH + A FORM BELOW TO ADD ANOTHER POST
 
   return (
     <Container>
+
       <Navbar bg="light" expand="md">
         <Navbar.Brand>FB</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -79,22 +77,29 @@ function App() {
         </Nav>
         <Navbar.Collapse />
       </Navbar>
+
       <Routes>
 
         <Route path="/" element={
           <View posts={posts} increaseLikes={increaseLikes} />
-        } />
-
+        } 
+        />
         <Route path="/view" element={
-          <View posts={posts} increaseLikes={increaseLikes} />
-        } />
-
+          <View 
+            posts={posts} 
+            increaseLikes={increaseLikes}
+            decreaseLikes={decreaseLikes} 
+          />
+        } 
+        />
         <Route path="/add" element={
-          <AddPost onSubmit={(title, content) =>
-            updatedPosts(title, content)} />
+          <AddPost 
+            AddPost={AddPost}
+           />
         } />
 
       </Routes>
+
     </Container>
   );
 }
