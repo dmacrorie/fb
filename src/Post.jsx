@@ -1,18 +1,16 @@
-
+import { Link } from 'react-router-dom';
 import './Post.css';
 
 
 
-const Post = ({post, increaseLikes, decreaseLikes}) => {
+const Post = ({post}) => {
 
     return (
-        <Link to={`/view/$(post.id)`}>
+        <Link to={`/posts/${post._id}`}>
         <div className="post">
             <h2>{post.title}</h2>
             <p>{post.content}</p>
             <p>{post.likes}</p>
-            <button onClick={increaseLikes}>Like</button>
-            <button onClick={decreaseLikes}>Unlike</button>
         </div>
         </Link>
     );

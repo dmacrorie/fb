@@ -4,12 +4,19 @@ import { useState } from "react";
 import './AddPost.css';
 import toastr from "toastr";
 import 'toastr/build/toastr.min.css';
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 //GETTING PROPS FROM APP
 
 const AddPost = (props) => {
 
-// want the initail form to have no title or content
+
+    console.log(props)
+
+    const { id } = useParams();
+
+// want the initial form to have no title or content
 
     const initialFormValues = {
             title: '',
@@ -17,42 +24,50 @@ const AddPost = (props) => {
         };
 //have the initial sate to be blank
 
-    const [formValues, changeFormValues] = useState(initialFormValues)
+    const [formValues, changeFormValues] = useState(props.edit ? props.posts.find((post) => post._id === id) :  initialFormValues)
 
 //EVENT.TARGET.NAME IS A STRING COMING FROM THE FORM INPUT
 
     const handleChange = (event) => {
-        const newState = { ...formValues }; {
+        const newState = { ...formValues }; 
             newState[event.target.name] = event.target.value;
-        }
         changeFormValues(newState);
     }
 
     const submitHandler = (event) => {
         event.preventDefault();
+        if (props.edit) {
+          axios.put(`http://localhost:3001/posts/${id}`, formValues)
+          .then(() => {
+            toastr["success"]("Post updated")
+            props.getPosts();
+          }) 
+        } else {
         props.onSubmit(formValues.title, formValues.content);
-        toastr["success"]("Todo added", "Great success");
-        changeFormValues(initialFormValues);
+        }
+        changeFormValues(...initialFormValues);
+        
     }
+    
 
 
     return (
         <div>
-            <Form onSubmit={submitHandler} class='formInput' >
+            <Form onSubmit={(event) => submitHandler(event)} class='formInput' >
             
                     <Form.Label controlId="postTitle">Title: </Form.Label>
                     <Form.Control
                         name="title"
                         type="text"
                         value={formValues.title}
-                        onChange={handleChange}
+                        onChange={(event) => handleChange(event)}
                     /><br/>
                     <Form.Label >Post: </Form.Label>
                     <Form.Control 
                         name="content"
                         type="text"
                         value={formValues.content}
-                        onChange={handleChange}
+                        onChange={(event) => handleChange(event)}
                     />
             <br></br>
 

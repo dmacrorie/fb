@@ -1,30 +1,32 @@
-import './App';
-import Post from './Post';
+import { Button } from "react-bootstrap";
+import "./App";
+import Post from "./Post";
+
+const View = ({ increaseLikes, decreaseLikes, deletePosts, posts }) => {
 
 
-const View = ({posts, increaseLikes, decreaseLikes}) => {
-
-    const getPosts = () => {
-
-        return posts.map(() => (
-            <>
-                <Post
-                    key={post.id}
-                    title={post.title}
-                    content={post.content}
-                    likes={post.likes}
-                />
-                <button className="likeButton" onClick={increaseLikes(post.id)}>Like</button>
-                <button className="dislikeButton" onClick={decreaseLikes(post.id)}>Dislike</button>
-            </>
-        ))
-    }
-    return (
-        <>
-            {getPosts()}
-        </>
-    )
-
+  return (
+    <>
+    {posts.map((post) => (
+      <div key={post._id}>
+        <Post post={post} ></Post>
+        <Button className="likeButton" onClick={() => increaseLikes(post._id)}>
+        Like
+      </Button>
+      <Button
+        className="dislikeButton"
+        onClick={() => decreaseLikes(post._id)}
+      >
+        Dislike
+      </Button>
+      <Button className="deleteButton" onClick={() => deletePosts(posts._id)}>
+        Dislike
+      </Button>
+      </div>
+    ))}
+    </>
+  )
 }
 
 export default View;
+
